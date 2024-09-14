@@ -1,0 +1,46 @@
+
+module mux4_1_tb();
+
+   // Step 1: Declare variables
+   reg [3:0] d;    // Data input
+   reg [1:0] sel;  // Selector input
+   wire y;         // Output
+   integer i, j;
+
+   // Step 2: Instantiate the Design Under Test (DUT)
+   mux4_1 DUT (
+      .d(d),
+      .sel(sel),
+      .y(y)
+   );
+   task initialize;
+      begin
+         {d, sel} = 0;
+      end
+   endtask
+   task data_input(input [3:0] data, input [1:0] select);
+      begin
+         #10;
+         d = data;
+         sel = select;
+      end
+   endtask
+   initial begin
+      initialize;
+      for (i = 0; i < 16; i = i + 1) begin
+         for (j = 0; j < 4; j = j + 1) begin
+            data_input(i, j);
+            #10;
+         end
+      end
+      data_input(4'b1010, 2'b10);
+      #10;
+
+      $finish;
+   end
+   initial begin
+      $monitor(" d=%b sel=%b ,y=%b", $time, d, sel, y);
+   end
+
+endmodule
+	
