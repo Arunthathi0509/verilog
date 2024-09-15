@@ -1,0 +1,51 @@
+module decoder_3_8_tb;
+
+	// Inputs
+	reg [2:0] a;
+
+
+	// Outputs
+	wire [7:0] y;
+
+	
+	integer j;
+
+	// Instantiate the Unit Under Test (UUT)
+	decoder_3_8 uut (
+		.a(a), 
+		.y(y)
+		
+	);
+
+	// Task to initialize inputs
+	task initialize;
+	begin
+		a = 3'd0;
+	
+	end
+	endtask
+task data_in(input [2:0]j);
+begin
+a=j;
+end 
+endtask
+ task delay();
+      begin
+	 #10;
+      end
+   endtask
+initial
+begin
+initialize;
+for(j=0;j<8;j=j+1)
+begin
+data_in(j);
+delay;
+end
+
+$finish;
+end
+initial
+$monitor("a=%b,y=%b",a,y);
+endmodule
+
