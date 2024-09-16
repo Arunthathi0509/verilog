@@ -1,0 +1,40 @@
+
+module encoder_8_3_tb;
+
+	// Inputs
+	reg [7:0] i;
+
+	// Outputs
+	wire [2:0] y;
+	integer j;
+
+	// Instantiate the Unit Under Test (UUT)
+	encoder_8_3 uut (
+		.i(i), 
+		.y(y)
+	);
+task initialize;
+begin
+i=8'd0;
+end
+endtask;
+task data_in(input [7:0]k);
+begin
+i=k;
+end
+endtask
+initial
+begin
+initialize;
+for(j=0;j<256;j=j+1)
+begin
+data_in(j);
+#10;
+end
+$finish;
+end
+initial
+$monitor("data_in=%b,output=%b",i,y);
+endmodule
+
+
