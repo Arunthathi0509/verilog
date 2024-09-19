@@ -1,0 +1,38 @@
+module bidir_buffer_tb;
+    reg cntrl;    // Control signal
+    reg a_temp; // Temporary driver for a
+    reg b_temp; // Temporary driver for b
+    wire a;       // Bidirectional wire a
+    wire b;       // Bidirectional wire b
+
+    // Instantiate the Unit Under Test (UUT)
+    bidir_buffer uut (
+        .cntrl(cntrl), 
+        .a(a), 
+        .b(b)
+    );
+
+    // Drive the inout ports conditionally based on control signal
+    assign a = (cntrl == 1) ? a_temp : 1'bz;
+    assign b = (cntrl == 0) ? b_temp : 1'bz;
+
+    initial begin
+        
+        
+        cntrl = 0;
+        a_temp = 0;
+        b_temp = 0;
+        #10;
+
+        b_temp = 1; 
+        #20;  
+        cntrl = 1; 
+        a_temp = 1;
+        #20; 
+       
+        cntrl = 0; 
+        a_temp = 0;
+		  $monitor("a=%b,b=%b,a_temp=%b,b_temp=%b,cntrl=%b",a,b,a_temp,b_temp,cntrl);
+    end
+
+endmodule
