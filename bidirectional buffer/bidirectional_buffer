@@ -1,0 +1,10 @@
+module bidir_buffer(
+    input cntrl,  // Control signal to determine direction
+    inout a,      // Bidirectional port a
+    inout b       // Bidirectional port b
+);
+
+    assign a = (cntrl == 1) ? 1'bz : b;  // When cntrl is 0, b drives a
+    assign b = (cntrl == 1) ? a : 1'bz;  // When cntrl is 1, a drives b
+
+endmodule
