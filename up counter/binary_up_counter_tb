@@ -1,0 +1,69 @@
+module binary__up_counter_tb;
+	reg [3:0] data_in;
+	reg load;
+	reg clk;
+	reg reset;
+	wire [3:0] count;
+	parameter cycle=10;
+	always
+	begin
+	#(cycle/2);
+	clk=1'b0;
+	#(cycle/2);
+	clk=1'b1;
+	end
+	binary_up_counter uut (
+		.data_in(data_in), 
+		.load(load), 
+		.clk(clk), 
+		.reset(reset), 
+		.count(count)
+	);
+
+	initial begin
+		
+		data_in = 0;
+		load = 0;
+		clk = 0;
+		reset = 0;
+
+		// Wait 100 ns for global reset to finish
+		#100;
+        
+		// Add stimulus here
+
+	end
+	task load_t(input l,input [3:0]d);
+	begin
+	@(negedge clk);
+	load=l;
+	data_in=d;
+	end
+	endtask
+	task reset_t();
+	begin
+	@(negedge clk);
+	reset=1'b1;
+	@(negedge clk);
+	reset=1'b0;
+	end
+	endtask
+	initial
+	begin
+	reset_t;
+	#100;
+	load_t(1'b1,4'd13);
+	load_t(1'b0,4'd13);
+	#200;
+	reset_t;#100;
+	load_t(1'b1,4'd10);
+	load_t(1'b0,4'd10);
+	#200;
+	$finish;
+	end
+	initial
+	$monitor ("data_in=%b,load=%b,reset=%b,clk=%b,count=%b",data_in,load,reset,clk,count);
+	
+      
+endmodule
+
