@@ -1,0 +1,83 @@
+module dual_async_ram_tb;
+
+	// Inputs
+	reg [15:0] din;
+	reg [3:0] rd_addr;
+	reg [3:0] wr_addr;
+	reg clr;
+	reg clk;
+	reg we;
+	reg re;
+
+	// Outputs
+	wire [15:0] dout;
+
+	// Instantiate the Unit Under Test (UUT)
+	dual_async_ram uut (
+		.din(din), 
+		.dout(dout), 
+		.rd_addr(rd_addr), 
+		.wr_addr(wr_addr), 
+		.clr(clr), 
+		.clk(clk), 
+		.we(we), 
+		.re(re)
+	);
+
+	initial
+	begin
+	clk=1'b0;
+	forever #5 clk=~clk;
+	end
+	task initialize;
+	begin
+	din=16'd0;
+	{rd_addr,wr_addr}=3'd0;
+	{clr,we,re}=3'b100;
+	end
+	endtask
+	task clear;
+	begin
+	@(negedge clk)
+	clr=1'b1;
+	@(negedge clk)
+	clr=1'b0;
+	end
+	endtask
+	task write(input [15:0]i,input [2:0]j,input k);
+	begin
+	@(negedge clk)
+	din=i;
+	wr_addr=j;
+	we=k;
+	end
+	endtask
+	task read(input [2:0]m,input n);
+	begin
+	@(negedge clk)
+	rd_addr=m;
+	re=n;
+	end
+	endtask
+	initial
+	begin
+	initialize;
+	clear;
+	#10;
+	write({$random},4'b1011,1'b1);
+	#10;
+	read(4'b1011,1'b1);
+	clear;
+	#10;
+	write({$random},4'b1011,1'b1);
+	#10;
+	read(4'b1011,1'b1);
+	
+	
+	end
+
+
+
+      
+endmodule
+
