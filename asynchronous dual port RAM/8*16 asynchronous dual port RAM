@@ -1,0 +1,32 @@
+module dual_async_ram(din,dout,rd_addr,wr_addr,clr,clk,we,re
+    );
+	 parameter width=16,depth=8,addr_bus=3;
+	 input [width-1:0]din;
+	 input [addr_bus-1:0]rd_addr,wr_addr;
+	 input clk,clr,we,re;
+	 output reg [width-1:0]dout;
+	 reg [width-1:0] mem [depth-1:0];
+	 integer i;
+	 always@(posedge clk or posedge clr)
+	 begin
+	 if(clr)
+	 begin
+	 dout<=0;
+	 for(i=0;i<8;i=i+1)
+	 mem[i]<=0;
+	 end
+	 else
+	 begin
+	 if(we==1)
+	 begin
+	 mem [wr_addr]<=din;
+	 end
+	 if(re==1)
+	 begin
+	 dout<= mem[rd_addr];
+	 end
+	 end
+	 end
+
+
+endmodule
