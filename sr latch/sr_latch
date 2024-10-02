@@ -1,0 +1,10 @@
+module sr_latch(
+    input s,      
+    input r,       
+    output q,      
+    output qb     
+);
+    nand n1(q, s, qb);   
+    nand n2(qb, r, q);   
+
+endmodule
