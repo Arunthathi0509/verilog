@@ -1,0 +1,34 @@
+module siso_tb;
+
+	// Inputs
+	reg clr;
+	reg clk;
+	reg d;
+
+	// Outputs
+	wire [3:0] q;
+
+	// Instantiate the Unit Under Test (UUT)
+	siso uut (
+		.clr(clr), 
+		.clk(clk),
+		.d(d), 
+		.q(q)
+	);
+	initial
+	begin
+	clr=1;
+	clk=0;
+	d=0;
+	#10 clr=1'b0;
+	#50
+	$finish;
+	end
+	always#1 clk=~clk;
+	always#2d=~d;
+	
+	initial
+	$monitor("d=%b,q=%b",d,q);
+      
+endmodule
+
