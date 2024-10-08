@@ -1,0 +1,41 @@
+
+module piso_tb;
+
+	// Inputs
+	reg clk;
+	reg sel;
+	reg clr;
+	reg [3:0] d;
+
+	// Outputs
+	wire v;
+
+	// Instantiate the Unit Under Test (UUT)
+	piso uut (
+		.v(v), 
+		.clk(clk), 
+		.sel(sel), 
+		.clr(clr), 
+		.d(d)
+	);
+
+	initial begin
+		// Initialize Inputs
+		clk = 0;
+		sel = 0;
+		clr = 1;
+		#2 clr=0;
+		d = 4'b0100;
+		#2 sel=1;
+		#10 sel=0;
+		d=4'b1110;
+		#2 sel=1;
+		#25
+		$finish;
+		end
+		always #1 clk=~clk;
+		initial
+		$monitor("clk=%b,d=%b,v=%b",clk,d,v);
+		endmodule
+
+		
