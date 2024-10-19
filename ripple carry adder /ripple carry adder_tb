@@ -1,0 +1,28 @@
+module tb_ripple_carry_adder_32bit;
+    reg [31:0] A;
+    reg [31:0] B;
+    reg cin;
+    wire [31:0] sum;
+    wire cout;
+
+    // Instantiate the Unit Under Test (UUT)
+    ripple_carry_adder_32bit uut (
+        .A(A), 
+        .B(B), 
+        .cin(cin), 
+        .sum(sum), 
+        .cout(cout)
+    );
+    initial begin
+        A = 32'd100; B = 32'h200; cin = 1'b0;
+        #10;  
+        A = 32'd200; B = 32'd200; cin = 1'b0;
+        #10;
+        A = 32'd300; B = 32'd200; cin = 1'b0;
+        #10;
+        A = 32'd400; B = 32'd500; cin = 1'b0;
+        #10;
+        $stop;
+		   $monitor("Time: %0d, A = %h, B = %h, Cin = %b, Sum = %h, Cout = %b", $time, A, B, cin, sum, cout);
+    end
+endmodule
