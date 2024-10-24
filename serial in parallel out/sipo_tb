@@ -1,0 +1,43 @@
+module tb_sipo;
+
+    reg clk;
+    reg rstn;
+    reg serial_in;
+    wire [3:0] parallel_out;
+
+    // Instantiate the SIPO shift register
+    sipo uut (
+        .clk(clk),
+        .rstn(rstn),
+        .serial_in(serial_in),
+        .parallel_out(parallel_out)
+    );
+
+
+    always begin
+        #5 clk = ~clk;
+    end
+
+    initial begin
+        
+        clk = 0;
+        rstn = 0;
+        serial_in = 0;
+        #10 rstn = 1;
+        serial_in = 1;
+        #10;
+        serial_in = 0;
+        #10;
+        serial_in = 1;
+        #10;
+        serial_in = 1;
+        #10;
+        #50;
+        $finish;
+    end
+
+    initial begin
+        $monitor("Time=%0d, Serial In=%b, Parallel Out=%b", $time, serial_in, parallel_out);
+    end
+
+endmodule
