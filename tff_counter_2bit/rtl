@@ -1,0 +1,16 @@
+module tff_counter_2bit(
+    input clk,reset,
+    output reg[1:0]count
+);
+    always @(posedge clk) 
+	  begin
+        if(reset)
+            count<=2'b00;
+        else 
+		   begin
+            count[0]<=~count[0];            
+            count[1]<=count[1]^count[0];    
+        end
+    end
+
+endmodule
