@@ -1,0 +1,26 @@
+module jk_2bit_counter (
+    input  clk,
+    input   rst_n,    
+    output  [1:0] count
+);
+
+    reg q0, q1;
+
+    always @(posedge clk or negedge rst_n) 
+	 begin
+        if (!rst_n)
+		  begin
+            q0 <= 0;
+            q1 <= 0;
+        end 
+		  else 
+		   begin
+            q0 <= ~q0;        
+            if (q0)           
+                q1 <= ~q1;
+        end
+    end
+
+    assign count = {q1, q0};
+
+endmodule
