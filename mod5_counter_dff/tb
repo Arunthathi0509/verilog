@@ -1,0 +1,43 @@
+module mod5_counter_tb;
+
+    reg clk;
+    reg reset;
+    wire [2:0] count;
+
+    // Instantiate DUT
+    mod5_counter_dff uut (
+        .clk(clk),
+        .reset(reset),
+        .count(count)
+    );
+
+    // Clock generation
+    always #5 clk = ~clk;
+
+    task apply_reset();
+        begin
+            reset = 1;
+            #10;
+            reset = 0;
+        end
+    endtask
+	 
+    task run_counter(input cycles);
+        integer i,cycles;
+        begin
+            for (i = 0; i < cycles; i = i + 1) begin
+                @(posedge clk);
+          
+            end
+        end
+    endtask
+
+    initial 
+	 begin
+        clk = 0;
+        apply_reset();
+        run_counter(15);  
+        $finish;
+    end
+
+endmodule
